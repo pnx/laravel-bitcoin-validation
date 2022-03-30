@@ -1,0 +1,45 @@
+{
+    "name": "pnx/laravel-bitcoin-validation",
+    "description": "Laravel validation rules for bitcoin",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Henrik Hautakoski",
+            "email": "henrik.hautakoski@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "bitwasp/bech32": "^0.0.1",
+        "tuupola/base58": "^2.1",
+        "illuminate/contracts": "^8.0|^9.0",
+        "illuminate/support": "^8.0|^9.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^7.2",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "BitcoinValidation\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BitcoinValidation\\ServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php ./vendor/bin/testbench package:discover --ansi"
+        ]
+    }
+}
