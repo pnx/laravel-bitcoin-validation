@@ -5,7 +5,7 @@ namespace BitcoinValidation\Rules;
 use Tuupola\Base58;
 use Illuminate\Contracts\Validation\Rule;
 
-class Base58Address
+class Base58Address implements Rule
 {
     const LEGACY        = 0x00;
     const P2SH          = 0x05;
