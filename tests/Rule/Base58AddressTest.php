@@ -4,6 +4,8 @@ namespace Tests\Rule;
 
 use BitcoinValidation\Rules\Base58Address;
 
+use Illuminate\Support\Facades\Validator;
+
 use Tests\TestCase;
 
 class Base58AddressTest extends TestCase
@@ -77,12 +79,14 @@ class Base58AddressTest extends TestCase
 
     public function test_get_message()
     {
-        $validator = new Base58Address(Base58Address::P2SH);
+        $rules = [
+            'p2sh' => new Base58Address(Base58Address::P2SH)
+        ];
 
-        $validator->passes('p2sh_addr', 'invalid');
+        $validator = Validator::make(['p2sh' => 'invalid'], $rules, [], ['p2sh' => 'P2SH Address']);
+        $expected = 'P2SH Address is not a valid bitcoin (SegWit) address';
 
-        $expected = 'p2sh_addr is not a valid bitcoin (SegWit) address';
-
-        $this->assertEquals($expected, $validator->message());
+        $errors = $validator->errors()->all();
+        $this->assertEquals($expected, $errors[0]);
     }
 }

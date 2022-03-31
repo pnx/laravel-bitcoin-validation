@@ -4,6 +4,8 @@ namespace Tests\Rule;
 
 use BitcoinValidation\Rules\Address;
 
+use Illuminate\Support\Facades\Validator;
+
 use Tests\Fixtures\LegacyAddress;
 use Tests\Fixtures\P2SHAddress;
 use Tests\TestCase;
@@ -37,12 +39,14 @@ class AddressTest extends TestCase
 
     public function test_get_message()
     {
-        $validator = new Address([ Address::LEGACY, Address::P2SH, Address::NSEGWIT ]);
+        $rules = [
+            'attribute' => new Address([ Address::LEGACY, Address::P2SH, Address::NSEGWIT ])
+        ];
 
-        $validator->passes('btc_address', "invalid");
+        $validator = Validator::make(['attribute' => 'invalid'], $rules, [], ['attribute' => 'Custom Name']);
+        $expected = "Custom Name is not a valid bitcoin address, the following formats are accepted: Legacy, SegWit, Native SegWit";
 
-        $expected = "btc_address is not a valid bitcoin address, the following formats are accepted: Legacy, SegWit, Native SegWit";
-
-        $this->assertEquals($expected, $validator->message());
+        $errors = $validator->errors()->all();
+        $this->assertEquals($expected, $errors[0]);
     }
 }

@@ -12,13 +12,6 @@ class Bech32Address implements Rule
     const TEST   = 'tb';
 
     /**
-     * The attribute name
-     *
-     * @var string
-     */
-    protected $attribute;
-
-    /**
      * The format to validate.
      */
     protected string $format;
@@ -45,8 +38,6 @@ class Bech32Address implements Rule
      */
     public function passes($attribute, $value)
     {
-        $this->attribute = $attribute;
-
         try {
             decodeSegwit($this->format, $value);
         } catch(Bech32Exception $ex) {
@@ -73,7 +64,6 @@ class Bech32Address implements Rule
     public function message()
     {
         return __("bitcoin-validation::messages.address_bech32", [
-            'attribute' => $this->attribute,
             'format' => $this->format()
         ]);
     }

@@ -4,6 +4,8 @@ namespace Tests\Rule;
 
 use BitcoinValidation\Rules\Bech32Address;
 
+use Illuminate\Support\Facades\Validator;
+
 use Tests\Fixtures\Bech32Address as Bech32Fixture;
 use Tests\TestCase;
 
@@ -56,12 +58,14 @@ class Bech32AddressTest extends TestCase
 
     public function test_get_message()
     {
-        $validator = new Bech32Address();
+        $rules = [
+            'native_segwit' => new Bech32Address()
+        ];
 
-        $validator->passes('segwit_addr', 'invalid');
+        $validator = Validator::make(['native_segwit' => 'invalid'], $rules, [], ['native_segwit' => 'Native SegWit Address']);
+        $expected = 'Native SegWit Address is not a valid bitcoin (Native SegWit) address';
 
-        $expected = 'segwit_addr is not a valid bitcoin (Native SegWit) address';
-
-        $this->assertEquals($expected, $validator->message());
+        $errors = $validator->errors()->all();
+        $this->assertEquals($expected, $errors[0]);
     }
 }

@@ -32,13 +32,6 @@ class Base58Address implements Rule
         self::XPUB          => 'xPub',
     ];
 
-    /**
-     * The attribute name
-     *
-     * @var string
-     */
-    protected $attribute;
-
     public function __construct(int $version)
     {
         $this->version = $version;
@@ -57,8 +50,6 @@ class Base58Address implements Rule
      */
     public function passes($attribute, $value)
     {
-        $this->attribute = $attribute;
-
         // NOTE: We do our own check here because Base58::decode assumes that
         // prefixes are always 1 bytes long.
 
@@ -118,7 +109,6 @@ class Base58Address implements Rule
     public function message()
     {
         return __("bitcoin-validation::messages.address_base58", [
-            'attribute' => $this->attribute,
             'format' => $this->format()
         ]);
     }

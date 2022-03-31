@@ -20,13 +20,6 @@ class Address implements Rule
      */
     protected $formats = [];
 
-    /**
-     * The attribute name
-     *
-     * @var string
-     */
-    protected $attribute;
-
     public function __construct($formats = self::LEGACY)
     {
         if (!is_array($formats)) {
@@ -73,8 +66,6 @@ class Address implements Rule
      */
     public function passes($attribute, $value)
     {
-        $this->attribute = $attribute;
-
         foreach($this->formats as $format) {
             if ($format->passes($attribute, $value)) {
                 return true;
@@ -104,7 +95,6 @@ class Address implements Rule
     public function message()
     {
         return __('bitcoin-validation::messages.address', [
-            'attribute' => $this->attribute,
             'formats' => $this->formats()
         ]);
     }
